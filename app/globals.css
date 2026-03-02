@@ -19,6 +19,20 @@
   }
 }
 
+@layer components {
+  .input-invoice {
+    @apply block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6;
+  }
+
+  .select-invoice {
+    @apply col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6;
+  }
+}
+
+.react-datepicker-wrapper {
+  display: block !important;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

@@ -1,65 +1,142 @@
-import Image from "next/image";
+"use client";
+
+import { Emisor } from "./components/emisor";
+import { Cliente } from "./components/cliente";
+import { Invoice } from "./components/invoice";
+import { Items } from "./components/items"
+import { Upload } from "./components/upload";
+import { useForm, FormProvider } from "react-hook-form";
+import { invoiceSchema, InvoiceFormValues } from "@/schemas/invoice.schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 
 export default function Home() {
+
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const methods = useForm<InvoiceFormValues>({
+    resolver: zodResolver(invoiceSchema),
+    mode: "onChange",
+    reValidateMode: "onChange",
+    defaultValues: {
+      logo: "",
+      emisor: {
+        compania: "",
+        nombre: "",
+        apellido: "",
+        sitioweb: "",
+        telefono: "",
+        email: "",
+        direccion: "",
+        ciudad: "",
+        estado: "",
+        codigoPostal: "",
+      },
+      cliente: {
+        compania: "",
+        nombre: "",
+        apellido: "",
+        email: "",
+        direccion: "",
+        ciudad: "",
+        estado: "",
+        codigoPostal: "",
+      },
+      numeroFactura: "",
+      fechaFactura: "",
+      fechaVencimiento: "",
+      items: [{ id: '01', tipo: 'Servicio', descripcion: 'Servicio de consultoría', cantidad: 1, precio: 1000 }],
+      impuesto: 0,
+      descuento: 0,
+    },
+  });
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("es-MX");
+  };
+
+  const HandleSubmit = async (data: InvoiceFormValues) => {
+    try {
+      setSuccessMessage(null);
+      setErrorMessage(null);
+      const baseUrl = process.env.NEXT_PUBLIC_ONBOARD_URL;
+      const formData = new FormData();
+      if (data.logo && data.logo[0]) {
+        formData.append("logo", data.logo[0]);
+      }
+      formData.append("emisor", JSON.stringify(data.emisor));
+      formData.append("cliente", JSON.stringify(data.cliente));
+      formData.append("numeroFactura", data.numeroFactura);
+      formData.append("fechaFactura", formatDate(data.fechaFactura));
+      formData.append("fechaVencimiento", formatDate(data.fechaVencimiento));
+      formData.append("items", JSON.stringify(data.items));
+      formData.append("impuesto", data.impuesto.toString());
+      formData.append("descuento", data.descuento.toString());
+
+      const res = await fetch(`${baseUrl}/api/invoice`, {
+        method: "POST",
+        body: formData,
+      });
+      if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+      const response = await res.json();
+      setSuccessMessage(
+        `Factura generada correctamente: ${response.url}`
+      );
+      methods.reset();
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error ? error.message : "Failed to submit form."
+      );
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="container mx-auto">
+      <h2 className="text-2xl font-bold text-gray-900 my-6 uppercase">Generar Factura</h2>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(HandleSubmit)}>
+          <div className="space-y-12">
+            <Upload />
+            <Emisor />
+            <Cliente />
+            <Invoice />
+            <Items />
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 text-center">
+            {successMessage && <p className="text-green-700 text-2xl sm:col-span-full">{successMessage}</p>}
+            {errorMessage && <p className="text-red-500 text-2xl sm:col-span-full">{errorMessage}</p>}
+          </div>
+
+          <div className="my-6 flex items-center justify-end gap-x-6">
+            <button
+              type="button"
+              className="text-sm/6 font-semibold text-gray-900 flex-shrink-0"
+              onClick={() => { methods.reset(); setSuccessMessage(null); setErrorMessage(null); }}
+              disabled={methods.formState.isSubmitting}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              Limpiar
+            </button>
+            <button
+              type="submit"
+              disabled={methods.formState.isSubmitting || methods.formState.isSubmitSuccessful}
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+              {methods.formState.isSubmitting
+                ? "Generando..."
+                : methods.formState.isSubmitSuccessful
+                  ? "Factura generada"
+                  : "Generar factura"}
+            </button>
+          </div>
+
+
+
+        </form>
+      </FormProvider>
+
+
     </div>
   );
 }
