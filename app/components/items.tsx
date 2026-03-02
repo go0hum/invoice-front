@@ -79,7 +79,7 @@ export const Items = () => {
                                     return (
                                         <tr key={index}>
                                             <td>
-                                                <input id="street-address" type="text" placeholder="Identificador*" className="input-invoice" {...register(`items.${index}.id`)} />
+                                                <input id="id" type="text" placeholder="Identificador*" className="input-invoice" {...register(`items.${index}.id`)} />
                                                 {errors.items?.[index]?.id && <p className="text-red-500 text-sm">{errors.items[index].id.message}</p>}
                                             </td>
                                             <td><select id="tipo" className="select-invoice" {...register(`items.${index}.tipo`)} onChange={(e) => {
@@ -92,7 +92,7 @@ export const Items = () => {
                                                 {errors.items?.[index]?.tipo && <p className="text-red-500 text-sm">{errors.items[index].tipo.message}</p>}
                                             </td>
                                             <td>
-                                                <input id="first-name" type="text" className="input-invoice" {...register(`items.${index}.descripcion`)} />
+                                                <input id="descripcion" type="text" className="input-invoice" {...register(`items.${index}.descripcion`)} />
                                                 {errors.items?.[index]?.descripcion && <p className="text-red-500 text-sm">{errors.items[index].descripcion.message}</p>}
                                             </td>
                                             <td>
@@ -104,7 +104,7 @@ export const Items = () => {
                                                 {errors.items?.[index]?.cantidad && <p className="text-red-500 text-sm">{errors.items[index].cantidad.message}</p>}
                                             </td>
                                             <td>
-                                                <input id="first-name" type="text" className="input-invoice" {...register(`items.${index}.precio`)} />
+                                                <input id="precio" type="number" className="input-invoice" {...register(`items.${index}.precio`)} />
                                                 {errors.items?.[index]?.precio && <p className="text-red-500 text-sm">{errors.items[index].precio.message}</p>}
                                             </td>
                                             <td><button type="button" onClick={() => removeConcepto(index)}>
@@ -133,7 +133,7 @@ export const Items = () => {
                 <div className="sm:col-span-3">
                     <label htmlFor="impuesto" className="block text-sm/6 font-medium text-gray-900">Impuesto*</label>
                     <div className="mt-2">
-                        <input id="impuesto" type="text" className="input-invoice" {...register("impuesto")} />
+                        <input id="impuesto" type="number" className="input-invoice" {...register("impuesto")} />
                         {errors.impuesto && <p className="text-red-500 text-sm">{errors.impuesto.message}</p>}
                     </div>
                 </div>
@@ -141,7 +141,7 @@ export const Items = () => {
                 <div className="sm:col-span-3">
                     <label htmlFor="descuento" className="block text-sm/6 font-medium text-gray-900">Descuento*</label>
                     <div className="mt-2">
-                        <input id="descuento" type="text" className="input-invoice" {...register("descuento")} />
+                        <input id="descuento" type="number" className="input-invoice" {...register("descuento")} />
                         {errors.descuento && <p className="text-red-500 text-sm">{errors.descuento.message}</p>}
                     </div>
                 </div>

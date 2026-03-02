@@ -4,8 +4,8 @@ export const invoiceItemSchema = z.object({
     id: z.string().min(1, { message: "El ID es requerido" }),
     tipo: z.string().min(3, { message: "El tipo es requerido" }),
     descripcion: z.string().min(3, { message: "La descripción es requerida" }),
-    cantidad: z.coerce.number().min(1, { message: "La cantidad debe ser al menos 1" }),
-    precio: z.coerce.number().min(1, { message: "El precio debe ser al menos 1" }),
+    cantidad: z.number().min(1, { message: "La cantidad debe ser al menos 1" }),
+    precio: z.number().min(1, { message: "El precio debe ser al menos 1" }),
 });
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -63,8 +63,8 @@ export const invoiceSchema = z.object({
                 message: "Todos los conceptos deben ser del mismo tipo (solo productos o solo servicios)",
             }
         ),
-    impuesto: z.coerce.number().min(0, { message: "Los impuestos deben ser al menos 0" }),
-    descuento: z.coerce.number().min(0, { message: "El descuento debe ser al menos 0" }),
+    impuesto: z.number().min(0, { message: "Los impuestos deben ser al menos 0" }),
+    descuento: z.number().min(0, { message: "El descuento debe ser al menos 0" }),
 });
 
 export type InvoiceFormValues = z.infer<typeof invoiceSchema>;
