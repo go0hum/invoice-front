@@ -15,7 +15,7 @@ export default function Home() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const methods = useForm<InvoiceFormValues>({
+  const methods = useForm({
     resolver: zodResolver(invoiceSchema),
     mode: "onChange",
     reValidateMode: "onChange",
