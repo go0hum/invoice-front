@@ -61,7 +61,6 @@ export const invoiceSchema = z.object({
             },
             {
                 message: "Todos los conceptos deben ser del mismo tipo (solo productos o solo servicios)",
-                path: ["items"],
             }
         ),
     impuesto: z.coerce.number().min(0, { message: "Los impuestos deben ser al menos 0" }),

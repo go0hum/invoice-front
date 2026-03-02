@@ -121,8 +121,8 @@ export const Items = () => {
                         <p className="text-red-500 text-sm col-span-full">{errors.items.root.message}</p>
                     )}
 
-                    {errors.items?.items?.message && (
-                        <p className="text-red-500 text-sm col-span-full">{errors.items.items.message}</p>
+                    {errors.items?.message && (
+                        <p className="text-red-500 text-sm col-span-full">{errors.items?.message}</p>
                     )}
 
                     <div className="sm:col-span-2">
