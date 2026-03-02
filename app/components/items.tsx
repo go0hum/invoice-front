@@ -107,7 +107,7 @@ export const Items = () => {
                                                 <input id="precio" type="number" className="input-invoice" {...register(`items.${index}.precio`)} />
                                                 {errors.items?.[index]?.precio && <p className="text-red-500 text-sm">{errors.items[index].precio.message}</p>}
                                             </td>
-                                            <td><button type="button" onClick={() => removeConcepto(index)}>
+                                            <td><button type="button" aria-label="Trash" onClick={() => removeConcepto(index)}>
                                                 <TrashIcon className="size-6 text-red-500 ml-4" />
                                             </button></td>
                                         </tr>
