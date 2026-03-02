@@ -79,10 +79,10 @@ export const Items = () => {
                                     return (
                                         <tr key={index}>
                                             <td>
-                                                <input id="id" type="text" placeholder="Identificador*" className="input-invoice" {...register(`items.${index}.id`)} />
+                                                <input id="id" type="text" aria-label="Identificador" placeholder="Identificador*" className="input-invoice" {...register(`items.${index}.id`)} />
                                                 {errors.items?.[index]?.id && <p className="text-red-500 text-sm">{errors.items[index].id.message}</p>}
                                             </td>
-                                            <td><select id="tipo" className="select-invoice" {...register(`items.${index}.tipo`)} onChange={(e) => {
+                                            <td><select id="tipo" aria-label="Tipo" className="select-invoice" {...register(`items.${index}.tipo`)} onChange={(e) => {
                                                 setValue(`items.${index}.tipo`, e.target.value);
                                                 trigger("items");
                                             }}>
@@ -92,11 +92,11 @@ export const Items = () => {
                                                 {errors.items?.[index]?.tipo && <p className="text-red-500 text-sm">{errors.items[index].tipo.message}</p>}
                                             </td>
                                             <td>
-                                                <input id="descripcion" type="text" className="input-invoice" {...register(`items.${index}.descripcion`)} />
+                                                <input id="descripcion" aria-label="Descripcion" type="text" className="input-invoice" {...register(`items.${index}.descripcion`)} />
                                                 {errors.items?.[index]?.descripcion && <p className="text-red-500 text-sm">{errors.items[index].descripcion.message}</p>}
                                             </td>
                                             <td>
-                                                <select id="cantidad" className="select-invoice" {...register(`items.${index}.cantidad`)}>
+                                                <select id="cantidad" aria-label="Cantidad" className="select-invoice" {...register(`items.${index}.cantidad`)}>
                                                     {Array.from({ length: 10 }, (_, i) => (
                                                         <option key={i} value={i}>{i}</option>
                                                     ))}
@@ -104,7 +104,7 @@ export const Items = () => {
                                                 {errors.items?.[index]?.cantidad && <p className="text-red-500 text-sm">{errors.items[index].cantidad.message}</p>}
                                             </td>
                                             <td>
-                                                <input id="precio" type="number" className="input-invoice" {...register(`items.${index}.precio`)} />
+                                                <input id="precio" aria-label="Precio" type="number" className="input-invoice" {...register(`items.${index}.precio`)} />
                                                 {errors.items?.[index]?.precio && <p className="text-red-500 text-sm">{errors.items[index].precio.message}</p>}
                                             </td>
                                             <td><button type="button" aria-label="Trash" onClick={() => removeConcepto(index)}>
